@@ -5,8 +5,6 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-import logging
-
 def index(request):
     """View function for home page of site."""
 
