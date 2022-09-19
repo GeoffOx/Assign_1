@@ -94,13 +94,16 @@ class Author(models.Model):
     class Meta:
         ordering = ['last_name', 'first_name']
 
+    def get_id(self):
+        return self.id
+
     def get_absolute_url(self):
         """Returns the URL to access a particular author instance."""
         return reverse('author-detail', args=[str(self.id)])
 
     def display_dates(self):
-        "Return a string of dates"
-        return f'{self.date_of_birth - self.date_of_death}'
+        """Return a string of dates"""
+        return f'{self.date_of_birth} - {self.date_of_death}'
 
     def __str__(self):
         """String for representing the Model object."""

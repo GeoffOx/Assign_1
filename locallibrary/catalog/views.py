@@ -5,6 +5,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+import logging
 
 def index(request):
     """View function for home page of site."""
@@ -62,3 +63,31 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
 
     def get_queryset(self):
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+
+
+class AuthorListView(generic.ListView):
+    model = Author
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(AuthorListView, self).get_context_data(**kwargs)
+
+        return context
+
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
+    def get_context_data(self, *args, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(AuthorDetailView, self).get_context_data(**kwargs)
+        context['books'] = Book.objects.all().filter(author=context['author'].get_id())
+
+        return context
+
+
+    #def author_detail_view(request, primary_key):
+    #    author = get_object_or_404(Author, pk=primary_key)
+    #    books = get_object_or_404(Book, author=primary_key)
+
+    #    return render(request, 'catalog/author_detail.html', context={'author': author, 'books': books})
