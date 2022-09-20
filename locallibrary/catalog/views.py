@@ -5,6 +5,9 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+
 def index(request):
     """View function for home page of site."""
 
